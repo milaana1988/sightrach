@@ -1,0 +1,343 @@
+openapi: 3.0.3
+info:
+  title: AERODROME 1.0
+  description: This is a sample Aerodrome Server based on the OpenAPI 3.0 specification.
+  version: 1.0.0
+servers:
+  - url: https://779xgw90ll.execute-api.eu-central-1.amazonaws.com
+tags:
+  - name: login
+    description: Login operations
+  - name: location
+    description: google address lookup
+paths:
+  /prd/onboard/get_location_address:
+    post:
+      tags:
+        - location
+      summary: Send lat lon for get address
+      description: Send lat lon for get address
+      operationId: get_location_address
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: 1234qwert
+                lat:
+                  type: number
+                  default: 30.23
+                lon:
+                  type: number
+                  default: 31.23
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      error:
+                        type: string
+                        default: Shlomo ha-Melekh St 4, Bnei Brak, Israel
+  /prd/onboard/login:
+    post:
+      tags:
+        - login
+      summary: Send for get operaator auth token
+      description: get operator token
+      operationId: loginoperator
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: test1@gmail.com
+                password:
+                  type: string
+                  default: '12345678'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      error:
+                        type: string
+                        enum:
+                          - user_not_found
+                          - user_not_authorized
+                          - user_not_confirmed
+                          - unknown_error
+  /prd/onboard/loginconsumer:
+    post:
+      tags:
+        - login
+      summary: Send for get customer auth token
+      description: get customer token
+      operationId: logincustomer
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: baraktls@gmail.com
+                password:
+                  type: string
+                  default: '12345678'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      error:
+                        type: string
+                        enum:
+                          - user_not_found
+                          - user_not_authorized
+                          - user_not_confirmed
+                          - unknown_error
+  /prd/onboard/validateoperatortoken:
+    post:
+      tags:
+        - login
+      summary: Validate operator token
+      description: validate operator token vs cognito
+      operationId: validateoperatortoken
+      requestBody:
+        description: send token for check
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: 123456789asdfgh
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        enum:
+                          - test1@gmail.com
+                          - ''
+  /prd/onboard/validatecustomertoken:
+    post:
+      tags:
+        - login
+      summary: Validate customer token
+      description: validate customer token vs cognito
+      operationId: validatecustomertoken
+      requestBody:
+        description: send token for check
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: 123456789asdfgh
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        enum:
+                          - baraktls@gmail.com
+                          - ''
+  /prd/onboard/confirm_cognito_user:
+    post:
+      tags:
+        - login
+      summary: Send for confirm user
+      description: send email and verification code
+      operationId: confirm_cognito_user
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: baraktls@gmail.com
+                user_type:
+                  type: string
+                  enum:
+                    - customer
+                    - operator
+                  default: customer
+                verification_code:
+                  type: string
+                  default: '12345678'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: string
+                    default: baraktls@gmail.com
+                  error:
+                    type: string
+                    enum:
+                      - code_mismatch
+                      - code_expired
+                      - unknown_error
+  /prd/onboard/forgot_password:
+    post:
+      tags:
+        - login
+      summary: Send for forgot password
+      description: send email and user type (operator/customer)
+      operationId: forgot_password
+      requestBody:
+        description: Send for getconfirm forgot verification code in email
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: baraktls@gmail.com
+                user_type:
+                  type: string
+                  enum:
+                    - customer
+                    - operator
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  forgot_sent:
+                    type: string
+                    default: baraktls@gmail.com
+                  error:
+                    type: string
+                    enum:
+                      - forgot_sent_error
+  /prd/onboard/confirm_forgot_cognito_password:
+    post:
+      tags:
+        - login
+      summary: Send for confirm user
+      description: send email and verification code
+      operationId: confirm_forgot_cognito_password
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: baraktls@gmail.com
+                user_type:
+                  type: string
+                  enum:
+                    - customer
+                    - operator
+                  default: customer
+                password:
+                  type: string
+                  default: '12345678'
+                verification_code:
+                  type: string
+                  default: '12345678'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        default: baraktls@gmail.com
+                      error:
+                        type: string
+                        enum:
+                          - code_expired
+                          - password_not_match_to_policy
+                          - user_not_found
+                          - code_mismatch
+                          - user_not_confirmed
+                          - forgot_confirm_error
+  /meir:
+    summary: meir
+    description: meir
+    
+    
