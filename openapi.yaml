@@ -341,3 +341,458 @@ paths:
     description: meir
     
     
+  /prd/onboard/getalltasks:
+    post:
+      tags:
+        - Tasks
+      summary: Get ALL available tasks
+      description:  Get ALL available tasks
+      operationId: getalltasks
+      requestBody:
+          description: Send for get auth token
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    default: baraktls@gmail.com
+                  password:
+                    type: string
+                    default: '12345678'
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+
+                        
+  /prd/onboard/getinvestigation:
+    post:
+      tags:
+        - Tasks
+      summary: get investigation
+      description:  Get ALL available tasks
+      operationId: getinvestigation
+      requestBody:
+          description: Get investigation
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  user_type:
+                    type: string
+                    default: customer
+                  task_id:
+                    type: string
+                    default: 'gzwFKuo2JtoA'
+                  access_token:
+                    type: string
+                    default: 123456789asdfgh
+                    
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+
+                      
+  /prd/onboard/get_user_integrity:
+    post:
+      tags:
+        - get_user_integrity
+      summary: get investigation
+      description:  Get ALL available tasks
+      operationId: get_user_integrity
+      requestBody:
+          description: Get integrity
+          content:
+            application/json:
+               schema:
+                type: object
+                properties:
+                  user_type:
+                    type: string
+                    default: customer
+                  access_token:
+                    type: string
+                    default: 123456789asdfgh
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        
+                        
+  /prd/onboard/getavailablegear:
+    post:
+      tags: 
+        - Operator equipment
+      summary: Get available hardware
+      description: Get available hardware like Drones
+      operationId: getavailablegear
+      requestBody:
+        description: Get available hardware like Drones
+        content:
+          application/json:
+             schema:
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        
+  /prd/onboard/getusersrevices:
+    post:
+      tags:
+        - Services
+      summary: Get User Services
+      operationId: getusersrevices
+      requestBody:
+        description: Get User Services
+        content:
+          application/json:
+             schema:
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        
+  /prd/payments/get_connected_account:
+    post:
+      tags:
+        - Payment
+      summary: Get connected account
+      operationId: get_connected_account
+      requestBody:
+        description: Get Connected Account
+        content:
+          application/json:
+             schema:
+              type: object
+              properties:
+                  access_token:
+                    type: string
+                    default: 123456789asdfgh
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        
+  /prd/onboard/updateworkarea:
+    post:
+      tags:
+        - Operator
+      operationId: updateworkarea
+      requestBody:
+        description: update workarea
+        content:
+          application/json:
+             schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: 123456789asdfgh
+                coordinates:
+                  type: string
+                  default:  {"x": 4429053.083030339,"y": 3082980.921961852,"z": 3388505.0300322818}
+                radius:
+                  type: number
+                  default: 11,000
+                id:
+                  type: number
+                  default: 417
+        required: true
+      responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    body:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          
+  /prd/onboard/getworkarea:
+    post:
+      tags:
+        - Operator
+      operationId: getworkarea
+      requestBody:
+        description: get workareas
+        content:
+          application/json:
+             schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: 123456789asdfgh
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  
+  /prd/onboard/insertcamera:
+    post:
+      tags:
+        - Operator equipment
+      operationId: insertcamera
+      requestBody:
+        description: insert camera
+        content:
+          application/json:
+             schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: 123456789asdfgh
+                name:
+                  type: string
+                  default: ZenmuseP1
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        
+  /prd/onboard/getallservices:
+    post:
+      tags:
+        - Operator
+      operationId: getallservices
+      requestBody:
+        description: get all services
+        content:
+          application/json:
+           schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                default: 123456789asdfgh
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+
+  /prd/onboard/operatorstasksdata:
+    post:
+      tags:
+       - Operator
+      operationId: operatorstasksdata
+      requestBody:
+        description: get all operator tasks data 
+        content:
+          application/json:
+           schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                default: 123456789asdfgh
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+       
+  /prd/onboard/update_customer_account_info:
+    post:
+      tags:
+        - account info
+      operationId: update_customer_account_info
+      requestBody:
+        description: get all operator tasks data 
+        content:
+          application/json:
+           schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                default: 123456789asdfgh
+              name:
+                type: string
+                default: John
+              last_name:
+                type: string
+                default: Williams
+              country:
+                type: string
+                default: United States
+              region:
+                type: string
+                default: NY
+              nickname:
+                type: string
+                default: John
+              company:
+                type: string
+                default: Will Co.
+              address:
+                type: string
+                default: 34 Hammilton
+              apartment:
+                type: string
+                default: 34
+              phone:
+                type: string
+                default: "000000"
+              postal_code:
+                type: string
+                default: "000000"
+              email:
+                type: string
+                default: uyt@jhu.com
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        
+  /prd/onboard/get_customer_account_info:
+      post:
+        tags:
+          - account info
+        operationId: get_customer_account_info
+        requestBody:
+          description: get customer account info
+          content:
+            application/json:
+             schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: 123456789asdfgh
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    body:
+                      type: object
+                      properties:
+                        message:
+                          type: string                        
+                        
+ 
+                      
