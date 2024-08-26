@@ -10,6 +10,8 @@ tags:
     description: Login operations
   - name: location
     description: google address lookup
+  - name: customer_payments
+    description: customer payments operations
 paths:
   /prd/onboard/get_location_address:
     post:
@@ -793,7 +795,167 @@ paths:
                       properties:
                         message:
                           type: string                        
-                        
+  /prd/payments/create_confirm_invoice:
+    post:
+      tags:
+        - customer_payments
+      summary: customer create invoice and pay
+      description: pay per set of tasks by default payment method.
+      operationId: create_confirm_invoice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: '123456789asdfgh'
+                tasks_data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paid:
+                    type: boolean
+                    default: True
+                  payment_method_type:
+                    type: string
+                    enum:
+                      - 'card'
+                      - 'voucher'
+  /prd/payments/get_customer_payment_methods:
+    post:
+      tags:
+        - customer_payments
+      summary: get customer payments methods
+      description: get customer payments methods.
+      operationId: get_customer_payment_methods
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: '123456789asdfgh'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment_method'
+  /prd/payments/get_default_payment_method:
+    post:
+      tags:
+        - customer_payments
+      summary: get customer default payment method id
+      description: get customer default payment method id
+      operationId: get_default_payment_method
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_token:
+                  type: string
+                  default: '123456789asdfgh'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: string
+components:
+  schemas:
+    Cartesian_point:
+      type: object
+      properties:
+        x:
+          type: number
+        y:
+          type: number
+        z:
+          type: number
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        coordinates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cartesian_point'
+        display_name:
+          type: string
+        GSD:
+          type: number
+        overlap_x:
+          type: integer
+        overlap_y:
+          type: integer
+        prefTime:
+          type: string
+        prefEndTime:
+          type: string
+        price:
+          type: number
+        services:
+          type: array
+          items:
+           enum:
+           - 'Mapping and Measurements'
+           - '3D Modeling Real estate'
+           - '3D Modeling Construction'
+           - 'Line Clearancy'
+           - 'Line Connectors'
+           - '3D Pole Modeling'
+           - 'Tower Inspection'
+    Card:
+      type: object
+      properties:
+        brand:
+          type: string
+          enum:
+            - 'mastercard'
+            - 'visa'
+        last4:
+           type: string
+           default: '4350'
+        exp_month:
+           type: integer
+           default: 12
+        exp_year:
+           type: integer
+           default: 28
+    Payment_method:
+      type: object
+      properties:
+        billing_details:
+          type: object
+          properties:
+            name:
+              type: string
+        card:
+          $ref: '#/components/schemas/Card'                      
  
                       
 test
