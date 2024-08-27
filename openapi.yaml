@@ -338,11 +338,46 @@ paths:
                           - code_mismatch
                           - user_not_confirmed
                           - forgot_confirm_error
-  /meir:
-    summary: meir
-    description: meir
-    
-    
+  /prd/onboard/resend_cognito_verification_code:
+    post:
+      tags:
+        - login
+      summary: resend verification code
+      description: resend verification code
+      operationId: resend_cognito_verification_code
+      requestBody:
+        description: send token and user type for send verification code to email
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: baraktls@gmail.com
+                user_type:
+                  type: string
+                  enum:
+                    - customer
+                    - operator
+                  default: customer
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
+                     type: string
+                     default: baraktls@gmail.com
+                  error:
+                    type: string
+                    enum:
+                      - ''
+                      - 'error_to_send_verification_code'
   /prd/onboard/getalltasks:
     post:
       tags:
