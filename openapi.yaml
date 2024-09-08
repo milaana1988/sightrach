@@ -135,6 +135,84 @@ paths:
                           - user_not_authorized
                           - user_not_confirmed
                           - unknown_error
+  /prd/onboard/register_customer:
+    post:
+      tags:
+        - login
+      summary: Send for get customer auth token
+      description: get customer token
+      operationId: registercustomer
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: baraktls@gmail.com
+                password:
+                  type: string
+                  default: '12345678'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      error:
+                        type: string
+                        enum:
+                          - user_exists
+                          - unknown_error
+  /prd/onboard/register_operator:
+    post:
+      tags:
+        - login
+      summary: Send for get customer auth token
+      description: get customer token
+      operationId: registeroperator
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: baraktls@gmail.com
+                password:
+                  type: string
+                  default: '12345678'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      error:
+                        type: string
+                        enum:
+                          - user_exists
+                          - unknown_error
   /prd/onboard/validateoperatortoken:
     post:
       tags:
@@ -2132,5 +2210,3 @@ components:
               type: string
         card:
           $ref: '#/components/schemas/Card'                      
- 
-                  
