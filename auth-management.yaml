@@ -1,0 +1,498 @@
+openapi: "3.0.1"
+info:
+  title: "auth-management-api"
+  version: "2024-09-15 14:28:17UTC"
+servers:
+- url: "https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "dev"
+paths:
+  /auth-management/{user-type}/user/authorize:
+    parameters:
+    - name: "user-type"
+      in: "path"
+      description: "Generated path parameter for user-type"
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserType'
+    post:
+      summary: Send for get user accceess token
+      description: get web user token
+      operationId: authorize
+      requestBody:
+        description: Send for get auth token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  default: test1@gmail.com
+                password:
+                  type: string
+                  default: '1_5asdfgH'
+        required: true
+      responses:
+        200:
+          description: "successfull response for POST /auth-management/{user-type}/user/authorize"
+          content:
+            application/json:
+             schema:
+               $ref: '#/components/schemas/TokenS'
+        400:
+          description: "error response for POST /auth-management/{user-type}/user/authorize"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UserNotFoundException
+                        - UserNotConfirmedException
+                        - NotAuthorizedException
+        500:
+          description: "unexpected error response for POST /auth-management/{user-type}/user/authorize"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /auth-management/{user-type}/user/registrate:
+    parameters:
+    - name: "user-type"
+      in: "path"
+      description: "Generated path parameter for user-type"
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserType'
+    post:
+      summary: Send for sign up user
+      description: registrate new user
+      operationId: registrate
+      requestBody:
+        description: send new creadentials and email for registrate new user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  default: test1@gmail.com
+                email:
+                  type: string
+                  default: test1@gmail.com
+                password:
+                  type: string
+                  default: '1_5asdfgH'
+        required: true
+      responses:
+        200:
+          description: "successfull response for POST /auth-management/{user-type}/user/registrate"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 UserConfirmed:
+                  type: boolean
+                  default: false
+                 CodeDeliveryDetail:
+                  type: object
+                 ResponseMetadata:
+                  type: object
+                 UserSub:
+                  type: string
+        400:
+          description: "error response for POST /auth-management/{user-type}/user/registrate"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - SQLAlchemyError
+                        - UsernameExistsException
+                        - InvalidPasswordException
+        500:
+          description: "unexpected error response for POST /auth-management/{user-type}/user/registrate"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /auth-management/{user-type}/user/confirm:
+    parameters:
+    - name: "user-type"
+      in: "path"
+      description: "Generated path parameter for user-type"
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserType'
+    post:
+      summary: Send forgot password request
+      description: Initiate forgot password request
+      operationId: confirm
+      requestBody:
+        description: send user name for initiate forgot password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  default: test1@gmail.com
+                confirm_code:
+                  type: string
+                  default: '12345'
+        required: true
+      responses:
+        200:
+          description: "successfull response for POST /auth-management/{user-type}/user/confirm"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 ResponseMetadata:
+                  type: object
+        400:
+          description: "error response for POST /auth-management/{user-type}/user/confirm"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UserNotFoundException
+                        - ExpiredCodeException
+                        - CodeMismatchException
+        500:
+          description: "unexpected error response for POST /auth-management/{user-type}/user/confirm"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /auth-management/{user-type}/user/reset:
+    parameters:
+    - name: "user-type"
+      in: "path"
+      description: "Generated path parameter for user-type"
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserType'
+    post:
+      summary: Send forgot password request
+      description: Initiate forgot password request
+      operationId: reset
+      requestBody:
+        description: send user name for initiate forgot password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  default: test1@gmail.com
+        required: true
+      responses:
+        200:
+          description: "successfull response for POST /auth-management/{user-type}/user/reset"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 UserConfirmed:
+                  type: boolean
+                  default: false
+                 CodeDeliveryDetail:
+                  type: object
+                 ResponseMetadata:
+                  type: object
+                 UserSub:
+                  type: string
+        400:
+          description: "error response for POST /auth-management/{user-type}/user/reset"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UserNotFoundException
+        500:
+          description: "unexpected error response for POST /auth-management/{user-type}/user/reset"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /auth-management/{user-type}/user/update:
+    parameters:
+    - name: "user-type"
+      in: "path"
+      description: "Generated path parameter for user-type"
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserType'
+    post:
+      summary: Update password request
+      description: Update password request
+      operationId: update
+      requestBody:
+        description: Update password with new password and confirm code
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  default: test1@gmail.com
+                password:
+                  type: string
+                  default: '12345'
+                confirm_code:
+                  type: string
+                  default: '99999'
+        required: true
+      responses:
+        200:
+          description: "successfull response for POST /auth-management/{user-type}/user/update"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 UserConfirmed:
+                  type: boolean
+                  default: false
+                 CodeDeliveryDetail:
+                  type: object
+                 ResponseMetadata:
+                  type: object
+                 UserSub:
+                  type: string
+        400:
+          description: "error response for POST /auth-management/{user-type}/user/update"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UserNotFoundException
+                        - ExpiredCodeException
+                        - CodeMismatchException
+                        - InvalidPasswordException
+        500:
+          description: "unexpected error response for POST /auth-management/{user-type}/user/update"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /auth-management/{user-type}/user/send:
+    parameters:
+    - name: "user-type"
+      in: "path"
+      description: "Generated path parameter for user-type"
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserType'
+    post:
+      summary: resend verification code after user signup
+      description: resend verification code after user signup
+      operationId: send
+      requestBody:
+        description: send user name for resend verification code after user signup
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  default: test1@gmail.com
+        required: true
+      responses:
+        200:
+          description: "successfull response for POST /auth-management/{user-type}/user/reset"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 UserConfirmed:
+                  type: boolean
+                  default: false
+                 CodeDeliveryDetail:
+                  type: object
+                 ResponseMetadata:
+                  type: object
+                 UserSub:
+                  type: string
+        400:
+          description: "error response for POST /auth-management/{user-type}/user/reset"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UserNotFoundException
+        500:
+          description: "unexpected error response for POST /auth-management/{user-type}/user/reset"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+components:
+  schemas:
+    UserType:
+      type: "string"
+      enum:
+        - customer
+        - operator
+    
+    TokenS:
+      type: object
+      properties:
+        AccessToken:
+          type: string
+        ExpiresIn:
+          type: number
+        TokenType:
+          type: string
+          default: "Bearer"
+        RefreshToken:
+          type: string
+        IdToken:
+          type: string
+          
+  securitySchemes:
+    customers-authorizer:
+      type: "oauth2"
+      flows: {}
+      x-amazon-apigateway-authorizer:
+        identitySource: "$request.header.Authorization"
+        jwtConfiguration:
+          audience:
+          - "30ab0vltr1ihtc3rv08bumfn1m"
+          issuer: "https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_ARdPKdDTF"
+        type: "jwt"
+x-amazon-apigateway-cors:
+  allowMethods:
+  - "GET"
+  - "OPTIONS"
+  - "POST"
+  allowHeaders:
+  - "*"
+  maxAge: 0
+  allowCredentials: false
+  allowOrigins:
+  - "*"
+x-amazon-apigateway-importexport-version: "1.0"
