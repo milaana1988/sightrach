@@ -54,7 +54,7 @@ components:
             - polygon
             - circle
           maxLength: 50
-          example: "circle"
+          example: "polygon"
         group_name:
           type: string
           maxLength: 45
