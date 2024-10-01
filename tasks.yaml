@@ -19,6 +19,9 @@ components:
         id:
           type: integer
           example: 1
+        sector_id:
+          type: integer
+          example: 1
         image_count:
           type: integer
           example: 4500
