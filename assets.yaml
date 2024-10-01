@@ -21,14 +21,6 @@ components:
           maxLength: 255
           nullable: true
           example: "Asset Unique Name"
-        update_time:
-          type: string
-          format: date-time
-          example: "2024-09-29T12:00:00Z"
-        create_time:
-          type: string
-          format: date-time
-          example: "2024-09-29T10:00:00Z"
         pref_time:
           type: string
           format: time
@@ -125,14 +117,6 @@ components:
           maxLength: 255
           nullable: true
           example: "Asset Unique Name"
-        update_time:
-          type: string
-          format: date-time
-          example: "2024-09-29T12:00:00Z"
-        create_time:
-          type: string
-          format: date-time
-          example: "2024-09-29T10:00:00Z"
         pref_time:
           type: string
           format: time
