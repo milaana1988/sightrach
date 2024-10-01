@@ -36,6 +36,9 @@ components:
           items:
             type: integer
           example: [69, 70]
+        sector_id:
+          type: integer
+          example: 1
         overlap_x:
           type: string
           maxLength: 45
