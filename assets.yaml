@@ -44,7 +44,7 @@ components:
           type: string
           maxLength: 45
           nullable: true
-          example: "90"
+          example: "80"
         shape:
           type: string
           enum:
