@@ -1,0 +1,373 @@
+openapi: 3.0.0
+info:
+  title: Task Management API
+  description: API for managing tasks with various operations such as creating, updating, deleting, and fetching tasks.
+  version: 1.0.0
+servers:
+  - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
+    description: Development API server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    TaskDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        image_count:
+          type: integer
+          example: 4500
+        image_size:
+          type: integer
+          example: 345
+        asset_name:
+          type: string
+          example: "lkhhkkh"
+        price:
+          type: number
+          example: 5765478
+        name:
+          type: string
+          example: "New Task"
+        pref_time:
+          type: string
+          format: time
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          example: "12:00"
+        services:
+          type: array
+          items:
+            type: integer
+          example: [69, 70]
+        gsd:
+          type: number
+          example: 1.76
+        overlap_x:
+          type: integer
+          example: 90
+        overlap_y:
+          type: integer
+          example: 90
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            example: [40.714557, -74.046242]
+          example:
+            - [40.714557, -74.046242]
+            - [42.714557, -72.046242]
+            - [43.714557, -70.046242]
+            - [40.714557, -74.046242]
+        group_name:
+          type: string
+          example: ""
+        geolocation:
+          type: string
+          example: "GRX6+X2 Mitzpe Ramon, Israel"
+        shape:
+          type: string
+          example: polygon
+        is_hidden:
+          type: integer
+          example: 0
+    TaskCreate:
+      type: object
+      properties:
+        image_count:
+          type: integer
+          example: 4500
+        image_size:
+          type: integer
+          example: 345
+        asset_name:
+          type: string
+          example: "lkhhkkh"
+        price:
+          type: number
+          example: 5765478
+        name:
+          type: string
+          example: "New Task"
+        pref_time:
+          type: string
+          format: time
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          example: "12:00"
+        services:
+          type: array
+          items:
+            type: integer
+          example: [69, 70]
+        gsd:
+          type: number
+          example: 1.76
+        overlap_x:
+          type: integer
+          example: 90
+        overlap_y:
+          type: integer
+          example: 90
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            example: [40.714557, -74.046242]
+          example:
+            - [40.714557, -74.046242]
+            - [42.714557, -72.046242]
+            - [43.714557, -70.046242]
+            - [40.714557, -74.046242]
+        group_name:
+          type: string
+          example: ""
+        geolocation:
+          type: string
+          example: "GRX6+X2 Mitzpe Ramon, Israel"
+        shape:
+          type: string
+          example: polygon
+        is_hidden:
+          type: integer
+          example: 0
+    TaskUpdate:
+      type: object
+      properties:
+        gmt:
+          type: integer
+          nullable: true
+        comply_time:
+          type: string
+          format: date-time
+          nullable: true
+        data_upload_time:
+          type: string
+          format: date-time
+          nullable: true
+        pref_time:
+          type: string
+          format: time
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          example: "12:00"
+        price:
+          type: number
+          example: 5765478
+        archive_time:
+          type: string
+          format: date-time
+          nullable: true
+        update_time:
+          type: string
+          format: date-time
+          nullable: true
+        create_time:
+          type: string
+          format: date-time
+          nullable: true
+        digital_contract:
+          type: string
+          example: "contract details"
+          nullable: true
+        raw_data_path:
+          type: string
+          example: "/path/to/raw/data"
+          nullable: true
+        raw_product_path:
+          type: string
+          example: "/path/to/raw/product"
+          nullable: true
+        paid:
+          type: boolean
+          example: false
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        operator_paid:
+          type: boolean
+          example: false
+        operator_paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        asset_id:
+          type: integer
+          nullable: true
+        status_id:
+          type: integer
+          example: 1
+        gsd:
+          type: number
+          nullable: true
+        shape:
+          type: string
+          example: "polygon"
+        name:
+          type: string
+          example: "Updated Task"
+        image_count:
+          type: integer
+          example: 4500
+        image_size:
+          type: integer
+          example: 345
+  responses:
+    BadRequest:
+      description: Bad Request - Invalid or missing input.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "MissingKeyInBody, InvalidInput, FailedInProgress, InvalidValueProvided"
+    NotFound:
+      description: Resource Not Found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "NotFound - The specified resource ID was not found."
+security:
+  - BearerAuth: []
+paths:
+  /task-management/customer/tasks:
+    post:
+      summary: Create new tasks
+      description: Create a new set of tasks with provided details.
+      operationId: createTasks
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: List of tasks to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskCreate'
+      responses:
+        201:
+          description: Tasks created successfully.
+          content:
+            application/json:
+               schema:
+                $ref: '#/components/schemas/TaskDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    get:
+      summary: Get all tasks
+      description: Retrieves a list of all tasks.
+      operationId: getTasks
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of tasks retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskDetails'
+
+  /task-management/customer/tasks/{id}:
+    get:
+      summary: Get a task
+      description: Get an existing task by its ID.
+      operationId: getTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID to get.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Task retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a task
+      description: Update an existing task by its ID.
+      operationId: updateTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID to update.
+          schema:
+            type: integer
+      requestBody:
+        description: Updated details of the task.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+      responses:
+        200:
+          description: Task updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete a task
+      description: Delete an existing task by its ID.
+      operationId: deleteTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID to delete.
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Task deleted successfully.
+        404:
+          $ref: '#/components/responses/NotFound'
