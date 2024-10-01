@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  title: Services and Business Types Management API
+  description: API for managing Services and Business Types.
+  version: 1.0.0
+servers:
+  - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
+    description: Development API server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+      ServicesDetails:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 123
+          name:
+            type: string
+            maxLength: 255
+            nullable: true
+            example: "Service Name"
+          camera_type_id:
+            type: integer
+            example: 1
+          sector_id:
+            type: integer
+            example: 1
+          flight_type_id:
+            type: integer
+            example: 1
+          RTK:
+            type: boolean
+            example: 0
+      BusinessTypesDetails:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              maxLength: 255
+              example: "Business Type Name"
+      StatusesDetails:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              maxLength: 255
+              example: "Status Name"
+  responses:
+    NotFound:
+      description: Resource Not Found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "NotFound - The specified resource ID was not found."
+    MethodNotAllowed:
+      description: Unauthorized method.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "MethodNotAllowed - The specified method not supported."
+security:
+  - BearerAuth: []
+
+paths:
+  /task-management/customer/services:
+    get:
+      summary: Get all Services
+      description: Retrieves a list of all Services.
+      operationId: getServices
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of Services retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServicesDetails'
+
+  /account-management/customer/business-types:
+    get:
+      summary: Get all Business Types
+      description: Retrieves a list of all Business Types.
+      operationId: getBusinessTypes
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of Business Types retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusinessTypesDetails'
+  /task-management/customer/statuses:
+    get:
+      summary: Get all Task Statuses
+      description: Retrieves a list of all existing Task Statuses.
+      operationId: getStatuses
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of Statuses retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatusesDetails'
