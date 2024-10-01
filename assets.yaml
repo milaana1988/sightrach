@@ -1,0 +1,332 @@
+openapi: 3.0.0
+info:
+  title: Asset Management API
+  description: API for managing Assets with various operations such as creating, updating, deleting, and fetching Assets.
+  version: 1.0.0
+servers:
+  - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
+    description: Development API server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AssetCreate:
+      type: object
+      properties:
+        asset_name:
+          type: string
+          maxLength: 255
+          nullable: true
+          example: "Asset Unique Name"
+        customer_id:
+          type: integer
+          example: 123
+        update_time:
+          type: string
+          format: date-time
+          example: "2024-09-29T12:00:00Z"
+        create_time:
+          type: string
+          format: date-time
+          example: "2024-09-29T10:00:00Z"
+        pref_time:
+          type: string
+          format: time
+          nullable: true
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          nullable: true
+          example: "12:00"
+        services:
+          type: array
+          items:
+            type: integer
+          example: [69, 70]
+        overlap_x:
+          type: string
+          maxLength: 45
+          example: "90"
+        overlap_y:
+          type: string
+          maxLength: 45
+          nullable: true
+          example: "90"
+        shape:
+          type: string
+          enum:
+            - polygon
+            - circle
+          maxLength: 50
+          example: "circle"
+        group_name:
+          type: string
+          maxLength: 45
+          nullable: true
+          example: "Group A"
+        geolocation:
+          type: string
+          maxLength: 255
+          nullable: true
+          example: "GRX6+X2 Mitzpe Ramon, Israel"
+        is_hidden:
+          type: boolean
+          example: false
+      required:
+        - shape
+      oneOf:
+        # Case where shape is polygon
+        - properties:
+            shape:
+              type: string
+              enum:
+                - polygon
+            polygon:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+                example: [40.714557, -74.046242]
+              example:
+                - [40.714557, -74.046242]
+                - [42.714557, -72.046242]
+                - [43.714557, -70.046242]
+                - [40.714557, -74.046242]
+          required: ["polygon"]
+          # No radius or center fields allowed here
+
+        # Case where shape is circle
+        - properties:
+            shape:
+              type: string
+              enum:
+                - circle
+            radius:
+              type: integer
+              example: 100
+            center:
+              type: array
+              items:
+                type: number
+              example: [40.714557, -74.046242]
+          required: ["radius", "center"]
+          # No polygon field allowed here
+
+    AssetDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        asset_name:
+          type: string
+          maxLength: 255
+          nullable: true
+          example: "Asset Unique Name"
+        customer_id:
+          type: integer
+          example: 123
+        update_time:
+          type: string
+          format: date-time
+          example: "2024-09-29T12:00:00Z"
+        create_time:
+          type: string
+          format: date-time
+          example: "2024-09-29T10:00:00Z"
+        pref_time:
+          type: string
+          format: time
+          nullable: true
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          nullable: true
+          example: "12:00"
+        services:
+          type: array
+          items:
+            type: integer
+          example: [69, 70]
+        overlap_x:
+          type: string
+          maxLength: 45
+          example: "90"
+        overlap_y:
+          type: string
+          maxLength: 45
+          nullable: true
+          example: "90"
+        shape:
+          type: string
+          enum:
+            - polygon
+            - circle
+          maxLength: 50
+          example: "circle"
+        group_name:
+          type: string
+          maxLength: 45
+          nullable: true
+          example: "Group A"
+        geolocation:
+          type: string
+          maxLength: 255
+          nullable: true
+          example: "GRX6+X2 Mitzpe Ramon, Israel"
+        is_hidden:
+          type: boolean
+          example: false
+  responses:
+    BadRequest:
+      description: Bad Request - Invalid or missing input.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "MissingKeyInBody, InvalidInput, FailedInProgress, InvalidValueProvided"
+    NotFound:
+      description: Resource Not Found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "NotFound - The specified resource ID was not found."
+
+security:
+  - BearerAuth: []
+
+paths:
+  /asset-management/customer/assets:
+    post:
+      summary: Create new Assets
+      description: Create a new set of Assets with provided details.
+      operationId: createAssets
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: List of Assets to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AssetCreate'
+      responses:
+        201:
+          description: Assets created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    get:
+      summary: Get all Assets
+      description: Retrieves a list of all Assets.
+      operationId: getAssets
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of Assets retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssetDetails'
+
+  /asset-management/customer/assets/{id}:
+    get:
+      summary: Get an Asset
+      description: Get an existing Asset by its ID.
+      operationId: getAsset
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Asset ID to get.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Asset retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete an Asset
+      description: Delete an existing Asset by its ID.
+      operationId: deleteAsset
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Asset ID to delete.
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Asset deleted successfully.
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Update an Asset
+      description: Update an existing Asset by its ID.
+      operationId: updateAsset
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Asset ID to update.
+          schema:
+            type: integer
+      requestBody:
+        description: Updated details of the Asset.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetCreate'
+      responses:
+        200:
+          description: Asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
