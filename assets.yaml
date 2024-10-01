@@ -125,9 +125,6 @@ components:
           maxLength: 255
           nullable: true
           example: "Asset Unique Name"
-        customer_id:
-          type: integer
-          example: 123
         update_time:
           type: string
           format: date-time
