@@ -31,6 +31,9 @@ components:
         asset_name:
           type: string
           example: "lkhhkkh"
+        remarks:
+          type: string
+          example: "remarks example"  
         price:
           type: number
           example: 5765478
@@ -98,6 +101,9 @@ components:
         asset_name:
           type: string
           example: "lkhhkkh"
+        remarks:
+          type: string
+          example: "remarks example"  
         price:
           type: number
           example: 5765478
