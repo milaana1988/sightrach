@@ -224,6 +224,28 @@ paths:
       operationId: getAssets
       security:
         - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The page number to retrieve.
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+          description: The number of tasks per page.
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+          description: The field to sort by (e.g., 'name', 'price', 'create_time').
+        - in: query
+          name: sort_direction
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: The direction of sorting (ascending or descending).
       responses:
         200:
           description: List of Assets retrieved successfully.
@@ -310,4 +332,3 @@ paths:
           $ref: '#/components/responses/BadRequest'
         404:
           $ref: '#/components/responses/NotFound'
-
