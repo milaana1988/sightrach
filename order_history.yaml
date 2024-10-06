@@ -1,0 +1,140 @@
+openapi: 3.0.0
+info:
+  title: Order History
+  description: API for managing Services and Business Types.
+  version: 1.0.0
+servers:
+  - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
+    description: Development API server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+      OrderHistoryDetails:
+        type: object
+        properties:
+          name:
+            type: string
+            example: 'task_name'
+          customer_id:
+            type: integer
+            example: 6
+          unique_id:
+            type: string
+            example: '0d900fd1bf9c4f82bdfc10bb86ffbc4e'
+          gmt:
+            type: integer
+            example: 3
+          shape:
+            type: string
+            example: 'polygon'
+          pref_time:
+            type: string
+            format: time
+            example: "08:00"
+          pref_end_time:
+            type: string
+            format: time
+            example: "12:00"
+          price:
+            type: integer
+            example: 14667
+          gsd:
+            type: number
+            example: 1.76
+          image_count:
+            type: integer
+            example: 5600
+          image_size:
+            type: integer
+            example: 56
+          asset_id:
+            type: integer
+            example: 114
+          status_id:
+            type: integer
+            example: 1
+          update_time:
+            type: string
+            format: date-time
+          create_time:
+            type: string
+            format: date-time
+          operator_id:
+            type: integer
+            format: date-time
+            example: 1
+          paid:
+            type: boolean
+            example: 0
+  responses:
+    NotFound:
+      description: Resource Not Found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "NotFound - The specified resource ID was not found."
+    MethodNotAllowed:
+      description: Unauthorized method.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "MethodNotAllowed - The specified method not supported."
+security:
+  - BearerAuth: []
+
+paths:
+  /task-management/customer/order-history:
+    get:
+      summary: The History of paid tasks
+      description: Retrieves a list of all paid Tasks by customer.
+      operationId: getOrderHistory
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The page number to retrieve.
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+          description: The number of tasks per page.
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+          description: The field to sort by (e.g., 'name', 'price', 'create_time').
+        - in: query
+          name: sort_direction
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: The direction of sorting (ascending or descending).
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A search term to filter tasks by name or other relevant fields.
+      responses:
+        200:
+          description: List of all Paid Tasks retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderHistoryDetails'
