@@ -1,0 +1,189 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    client:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        invoice_settings:
+          type: object
+          properties:
+            default_payment_method:
+              type: string
+security:
+  - bearerAuth: []
+openapi: 3.0.3
+info:
+  title: AERODROME 1.0
+  description: This is a sample Aerodrome Server based on the OpenAPI 3.0 specification.
+  version: 1.0.0
+servers:
+  - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
+tags:
+  - name: New API
+    description: New API version
+paths:
+  /payment-management/customer/keys:
+    get:
+      tags:
+        - payment methods management
+      description: Get publishable keys
+      responses:
+        200:
+          description: Successful update account information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 stripe_publishable_key: 
+                   type: string
+        500:
+          description: "unexpected error response for GET /payment-management/customer/keys"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /payment-management/customer/client:
+    get:
+      tags:
+        - payment methods management
+      description: Get stripe client
+      responses:
+        200:
+          description: Successful Get stripe client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/client'
+        404:
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      error_type:
+                        type: string
+                        enum:
+                        - NotFound
+    post:
+      tags:
+        - payment methods management
+      description: Create stripe client
+      responses:
+        200:
+          description: Successful Create stripe client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/client'
+        500:
+          description: "unexpected error response for GET /payment-management/customer/client"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /payment-management/customer/payment-methods:
+    get:
+      tags:
+        - payment methods management
+      description: Get payment methods
+      responses:
+        200:
+          description: Get payment methods
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+        404:
+          description: payment methods not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      error_type:
+                        type: string
+                        enum:
+                        - NotFound
+    post:
+      tags:
+        - payment methods management
+      description: Create payment method
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_method_token:
+                  type: string
+                payment_method_type:
+                  type: string
+                  enum:
+                    - card
+                    - us_bank_account
+        required: true
+      responses:
+        200:
+          description: Successful create payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/client'
+        500:
+          description: "unexpected error response for GET /payment-management/customer/client"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  
