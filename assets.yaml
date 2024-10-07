@@ -164,6 +164,99 @@ components:
         is_hidden:
           type: boolean
           example: false
+          
+    ScheduleCreate:
+        type: object
+        properties:
+          frequency:
+            type: integer
+            nullable: false
+            example: 1
+          asset_id:
+            type: integer
+            nullable: false
+            example: 70
+          days_arr:
+            type: array
+            items:
+              type: integer
+            example: [1, 2, 3]
+          preferred_time:
+            type: string
+            format: time
+            nullable: false
+            example: "08:00"
+          active:
+            type: boolean
+            nullable: false
+            example: true
+          due_date:
+            type: string
+            format: date-time
+            nullable: false
+            example: "2024-10-06 18:16:32.473956"
+            
+    ScheduleUpdate:
+        type: object
+        properties:
+          frequency:
+            type: integer
+            nullable: false
+            example: 1
+          days_arr:
+            type: array
+            items:
+              type: integer
+            example: [1, 2, 3]
+          preferred_time:
+            type: string
+            format: time
+            nullable: false
+            example: "08:00"
+          active:
+            type: boolean
+            nullable: false
+            example: true
+          due_date:
+            type: string
+            format: date-time
+            nullable: false
+            example: "2024-10-06 18:16:32.473956"
+            
+    ScheduleDetails:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 123
+          frequency:
+              type: integer
+              nullable: false
+              example: 1
+          asset_id:
+            type: integer
+            nullable: false
+            example: 69
+          days_arr:
+            type: array
+            items:
+              type: integer
+            example: [1, 2, 3]
+          preferred_time:
+            type: string
+            format: time
+            nullable: false
+            example: "08:00"
+          active:
+            type: boolean
+            nullable: false
+            example: true
+          due_date:
+            type: string
+            format: date-time
+            nullable: false
+            example: "2024-10-06 18:16:32.473956"
+            
   responses:
     BadRequest:
       description: Bad Request - Invalid or missing input.
@@ -192,6 +285,8 @@ security:
 paths:
   /asset-management/customer/assets:
     post:
+      tags: 
+      - Asset
       summary: Create new Assets
       description: Create a new set of Assets with provided details.
       operationId: createAssets
@@ -219,6 +314,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 
     get:
+      tags: 
+      - Asset
       summary: Get all Assets
       description: Retrieves a list of all Assets.
       operationId: getAssets
@@ -258,6 +355,8 @@ paths:
 
   /asset-management/customer/assets/{id}:
     get:
+      tags: 
+      - Asset
       summary: Get an Asset
       description: Get an existing Asset by its ID.
       operationId: getAsset
@@ -283,6 +382,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 
     delete:
+      tags: 
+      - Asset
       summary: Delete an Asset
       description: Delete an existing Asset by its ID.
       operationId: deleteAsset
@@ -302,6 +403,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 
     put:
+      tags: 
+      - Asset
       summary: Update an Asset
       description: Update an existing Asset by its ID.
       operationId: updateAsset
@@ -328,6 +431,135 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssetDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+          
+  /asset-management/customer/schedule-cron:
+    post: 
+      tags: 
+      - Schedule
+      summary: Create new Schedule for Asset
+      description: Create new schedule for an asset with provided details.
+      operationId: createSchedule
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: List of Assets to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/ScheduleCreate'
+      responses:
+        201:
+          description: Schedule created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    get:
+      tags: 
+      - Schedule
+      summary: Get all Schedules per customer
+      description: Retrieves a list of all Schedules of the current customer.
+      operationId: getSchedules
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of Schedules retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleDetails'
+
+  /asset-management/customer/schedule-cron/{id}:
+    get:
+      tags: 
+      - Schedule
+      summary: Get Schedule by ID
+      description: Get an existing Schedule by its ID.
+      operationId: getSchedule
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Schedule ID to get.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Schedule retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags: 
+      - Schedule
+      summary: Delete a Schedule
+      description: Delete an existing Schedule by its ID.
+      operationId: deleteSchedule
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Schedule ID to delete.
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Schedule deleted successfully.
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: 
+      - Schedule
+      summary: Update a Schedule
+      description: Update an existing Schedule by its ID.
+      operationId: updateSchedule
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Schedule ID to update.
+          schema:
+            type: integer
+      requestBody:
+        description: Updated details of the Schedule.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleUpdate'
+      responses:
+        200:
+          description: Asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleDetails'
         400:
           $ref: '#/components/responses/BadRequest'
         404:
