@@ -378,6 +378,63 @@ paths:
                       type: string
                       enum:
                         - UnexpectedException
+  /auth-management/{user-type}/user/change:
+    parameters:
+    - name: "user-type"
+      in: "path"
+      description: "Generated path parameter for user-type"
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserType'
+    post:
+      summary: Change password request
+      description: Change password request
+      operationId: change
+      requestBody:
+        description: Update password with new password and confirm code
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                  default: 12345
+                new_password:
+                  type: string
+                  default: '12345'
+                access_token:
+                  type: string
+                  default: '99999'
+        required: true
+      responses:
+        200:
+          description: "successfull response for POST /auth-management/{user-type}/user/change"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 ResponseMetadata:
+                  type: object
+        500:
+          description: "error response for POST /auth-management/{user-type}/user/update"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UserNotFoundException
+                        - InvalidPasswordException
+                        - UnexpectedException
   /auth-management/{user-type}/user/send:
     parameters:
     - name: "user-type"
