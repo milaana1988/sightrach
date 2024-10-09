@@ -1,0 +1,168 @@
+openapi: 3.0.0
+info:
+  title: Utils Management API
+  description: API for managing various utils that don't require auth.
+  version: 1.0.0
+servers:
+  - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
+    description: Development API server
+
+
+paths:
+  /utils-management/business-types:
+    get:
+      tags: 
+      - Business Types
+      summary: Get all Business Types
+      description: Retrieves a list of all Business Types.
+      operationId: getBusinessTypes
+      responses:
+        200:
+          description: List of Business Types retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "Individual"
+                example:
+                  - id: 2
+                    name: "Business"
+                  - id: 3
+                    name: "Corporation"
+                  - id: 1
+                    name: "Individual"
+                  
+  /utils-management/services:
+    get:
+      tags: 
+      - Services
+      summary: Get all Services
+      description: Retrieves a list of all Services.
+      operationId: getServices
+      responses:
+        200:
+          description: List of Services retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 3
+                    name:
+                      type: string
+                      example: "Construction"
+                    services:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 3
+                          name:
+                            type: string
+                            example: "3D Modeling Construction"
+                example:
+                  - id: 3
+                    name: "Construction"
+                    services:
+                      - id: 3
+                        name: "3D Modeling Construction"
+                      - id: 2
+                        name: "Mapping and Measurements"
+                  - id: 2
+                    name: "Critical Assets"
+                    services:
+                      - id: 7
+                        name: "3D Pole Modeling"
+                      - id: 5
+                        name: "Line Clearancy"
+                      - id: 6
+                        name: "Line Connectors"
+                  - id: 1
+                    name: "Real Estate"
+                    services:
+                      - id: 1
+                        name: "3D Modeling Real estate"
+                  - id: 5
+                    name: "Tower Inspection"
+                    services:
+                      - id: 8
+                        name: "Tower Inspection"
+  /utils-management/statuses:
+    get:
+      tags: 
+      - Statuses
+      summary: Get all Statuses
+      description: Retrieves a list of all Statuses.
+      operationId: getStatuses
+      responses:
+        200:
+          description: List of Statuses retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "scheduled"
+                example:
+                  - id: 1
+                    name: "scheduled"
+                  - id: 2
+                    name: "pending"
+                  - id: 3
+                    name: "analysis"
+  /utils-management/cron-types:
+    get:
+      tags: 
+      - Cron Types
+      summary: Get all Cron Types
+      description: Retrieves a list of all Cron Types.
+      operationId: getCronTypes
+      responses:
+        200:
+          description: List of Cron Types retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      example: "Weekly"
+                    name:
+                      type: string
+                      example: "weekly"
+                    id:
+                      type: integer
+                      example: 1
+                example:
+                  - type: "Weekly"
+                    name: "weekly"
+                    id: 1
+                  - type: "Monthly"
+                    name: "monthly"
+                    id: 2
+              
+                  
