@@ -184,8 +184,60 @@ paths:
                   properties:
                     type:
                       type: string
-                      description: "Parking Lots, Garages"
+                      example: "Parking Lots, Garages"
                     mcc_code:
                       type: integer
                       example: 212
+  /utils-management/default-payment-types:
+    get:
+      tags: 
+      - Default Payment Types
+      summary: Get all Payment Types
+      description: Retrieves a list of all Payment Types.
+      operationId: getPaymentTypes
+      responses:
+        200:
+          description: List of Payment Types retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: Card
+  /utils-management/currencies:
+    get:
+      tags: 
+      - Currencies
+      summary: Get all Currencies
+      description: Retrieves a list of all Currencies.
+      operationId: getCurrencies
+      responses:
+        200:
+          description: List of Currencies retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: Dollars
+                    code:
+                      type: string
+                      example: USD
+                    symbol:
+                      type: string
+                      example: $
                   
