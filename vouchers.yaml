@@ -1,0 +1,220 @@
+openapi: 3.0.0
+info:
+  title: Vouchers Management API
+  description: API for managing Vouchers.
+  version: 1.0.0
+servers:
+  - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
+    description: Development API server
+components:
+    securitySchemes:
+      BearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+    schemas:
+      VoucherAttach:
+          type: array
+          items: 
+            type: object
+            properties:
+              uuid:
+                type: string
+                example: 6SG4GZDY
+              customer_id:
+                type: integer
+                example: 6
+      VoucherDetails:
+          type: array
+          items:
+              type: object
+              properties:
+                uuid:
+                  type: string
+                  example: 6SG4GZDY
+                customer_id:
+                  type: integer
+                  example: 6
+                amount:
+                  type: integer
+                  example: 350
+                currency_id:
+                  type: integer
+                  example: 1
+    responses:
+        BadRequest:
+          description: Bad Request - Invalid or missing input.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "MissingKeyInBody, InvalidInput, FailedInProgress, InvalidValueProvided"
+        NotFound:
+          description: Resource Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "NotFound - The specified resource ID was not found."
+
+paths:
+  /voucher-management/customer/credit:
+    post:
+      tags: 
+      - Vouchers
+      summary: Generate vouchers (for testing only))
+      description: Generate non-attached vouchers.
+      operationId: generateVoucher
+      requestBody:
+        description: Generate random unique vouchers, later to attach them to the needed user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  amount:
+                    type: integer
+                    example: 250
+                  currency_id:
+                    type: integer
+                    example: 1
+                    
+      responses:
+        200:
+          description: Vouchers generated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoucherDetails'
+    get:
+      tags: 
+      - Vouchers
+      summary: Get all non-attached vouchers (only for testing))
+      description: Retrieves a list of all Non Attached Vouchers.
+      operationId: getNonAttachedVouchers
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of All Non-Attched Vouchers retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    uuid:
+                      type: string
+                      example: 6SG4GZDY
+                example:
+                  - 6SG4GZDY
+                  - EA758YGS
+    put:
+      tags: 
+      - Vouchers
+      summary: Attach a voucher to user
+      description: Attaches the voucher from "Non-attached vouchers" to a user (for testing only).
+      operationId: attachVoucher
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: All the attached vouchers of the current user.
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/VoucherAttach'
+      responses:
+        200:
+          description: Voucher attached successfully to the user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoucherDetails'
+  /voucher-management/balance:
+    get:
+      tags: 
+      - Vouchers
+      summary: Get user voucher balance
+      description: Retrieves the user balance.
+      operationId: getVoucherBalance
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Voucher Balance retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 400
+  /voucher-management/validate:
+    post:
+      tags: 
+      - Vouchers
+      summary: Validate user voucher (this is the one you need on the payment method upon applying the voucher)
+      description: Checks voucher validity for the user.
+      operationId: validateVoucher
+      requestBody:
+        description: Validate balance of the current user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuid:
+                  type: string
+                  example: 6SG4GZDY
+      responses:
+        200:
+          description: Voucher validated successfully.
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 400
+  /voucher-management/pay:
+    post:
+      tags: 
+      - Vouchers
+      summary: Pay with voucher
+      description: Aplies payment with voucher if the balance is enough.
+      operationId: payWithVoucher
+      requestBody:
+        description: Pay with voucher balance of the current user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_id:
+                  type: integer
+                  example: 67
+                currency_id:
+                  type: integer
+                  example: 1
+                amount:
+                  type: integer
+                  example: 400
+      responses:
+        200:
+          description: Paid successfully with voucher.
+          content:
+            application/json:
+              schema:
+                type: boolean
+                example: True
+  
+                  
