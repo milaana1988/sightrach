@@ -164,5 +164,28 @@ paths:
                   - type: "Monthly"
                     name: "monthly"
                     id: 2
-              
+                    
+  /utils-management/mcc-code:
+    get:
+      tags: 
+      - MCC Codes
+      summary: Get all MCC Codes
+      description: Retrieves a list of all MCC Codes.
+      operationId: getMccCodes
+      responses:
+        200:
+          description: List of MCC Codes retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: "Parking Lots, Garages"
+                    mcc_code:
+                      type: integer
+                      example: 212
                   
