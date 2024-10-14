@@ -405,4 +405,22 @@ paths:
           description: Task deleted successfully.
         404:
           $ref: '#/components/responses/NotFound'
+  /task-management/customer/dashboard-cards:
+    get:
+      summary: Get Dashboard Cards
+      description: Get customer Dashboard Cards.
+      operationId: getDashboardCards
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Task dashboard card retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
                   
