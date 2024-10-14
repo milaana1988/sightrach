@@ -1,222 +1,408 @@
 openapi: 3.0.0
 info:
-  title: Vouchers Management API
-  description: API for managing Vouchers.
+  title: Task Management API
+  description: API for managing tasks with various operations such as creating, updating, deleting, and fetching tasks.
   version: 1.0.0
 servers:
   - url: https://h73q45ao7a.execute-api.eu-central-1.amazonaws.com/dev/
     description: Development API server
 components:
-    securitySchemes:
-      BearerAuth:
-        type: http
-        scheme: bearer
-        bearerFormat: JWT
-    schemas:
-      VoucherAttach:
-          type: array
-          items: 
-            type: object
-            properties:
-              uuid:
-                type: string
-                example: 6SG4GZDY
-              customer_id:
-                type: integer
-                example: 6
-      VoucherDetails:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    TaskDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        sector_id:
+          type: integer
+          example: 1
+        image_count:
+          type: integer
+          example: 4500
+        image_size:
+          type: integer
+          example: 345
+        asset_name:
+          type: string
+          example: "lkhhkkh"
+        remarks:
+          type: string
+          example: "remarks example"  
+        price:
+          type: number
+          example: 5765478
+        name:
+          type: string
+          example: "New Task"
+        pref_time:
+          type: string
+          format: time
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          example: "12:00"
+        services:
           type: array
           items:
-              type: object
-              properties:
-                uuid:
-                  type: string
-                  example: 6SG4GZDY
-                customer_id:
-                  type: integer
-                  example: 6
-                amount:
-                  type: integer
-                  example: 350
-                currency_id:
-                  type: integer
-                  example: 1
-    responses:
-        BadRequest:
-          description: Bad Request - Invalid or missing input.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "MissingKeyInBody, InvalidInput, FailedInProgress, InvalidValueProvided"
-        NotFound:
-          description: Resource Not Found.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "NotFound - The specified resource ID was not found."
+            type: integer
+          example: [69, 70]
+        gsd:
+          type: number
+          example: 1.76
+        overlap_x:
+          type: integer
+          example: 90
+        overlap_y:
+          type: integer
+          example: 90
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            example: [40.714557, -74.046242]
+          example:
+            - [40.714557, -74.046242]
+            - [42.714557, -72.046242]
+            - [43.714557, -70.046242]
+            - [40.714557, -74.046242]
+        group_name:
+          type: string
+          example: ""
+        geolocation:
+          type: string
+          example: "GRX6+X2 Mitzpe Ramon, Israel"
+        shape:
+          type: string
+          example: polygon
+        is_hidden:
+          type: integer
+          example: 0
+    TaskCreate:
+      type: object
+      properties:
+        image_count:
+          type: integer
+          example: 4500
+        sector_id:
+          type: integer
+          example: 1  
+        image_size:
+          type: integer
+          example: 345
+        asset_name:
+          type: string
+          example: "lkhhkkh"
+        remarks:
+          type: string
+          example: "remarks example"  
+        price:
+          type: number
+          example: 5765478
+        name:
+          type: string
+          example: "New Task"
+        pref_time:
+          type: string
+          format: time
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          example: "12:00"
+        services:
+          type: array
+          items:
+            type: integer
+          example: [69, 70]
+        gsd:
+          type: number
+          example: 1.76
+        overlap_x:
+          type: integer
+          example: 90
+        overlap_y:
+          type: integer
+          example: 90
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            example: [40.714557, -74.046242]
+          example:
+            - [40.714557, -74.046242]
+            - [42.714557, -72.046242]
+            - [43.714557, -70.046242]
+            - [40.714557, -74.046242]
+        group_name:
+          type: string
+          example: ""
+        geolocation:
+          type: string
+          example: "GRX6+X2 Mitzpe Ramon, Israel"
+        shape:
+          type: string
+          example: polygon
+        is_hidden:
+          type: integer
+          example: 0
+    TaskUpdate:
+      type: object
+      properties:
+        gmt:
+          type: integer
+          nullable: true
+        comply_time:
+          type: string
+          format: date-time
+          nullable: true
+        data_upload_time:
+          type: string
+          format: date-time
+          nullable: true
+        pref_time:
+          type: string
+          format: time
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          example: "12:00"
+        price:
+          type: number
+          example: 5765478
+        archive_time:
+          type: string
+          format: date-time
+          nullable: true
+        update_time:
+          type: string
+          format: date-time
+          nullable: true
+        create_time:
+          type: string
+          format: date-time
+          nullable: true
+        digital_contract:
+          type: string
+          example: "contract details"
+          nullable: true
+        raw_data_path:
+          type: string
+          example: "/path/to/raw/data"
+          nullable: true
+        raw_product_path:
+          type: string
+          example: "/path/to/raw/product"
+          nullable: true
+        paid:
+          type: boolean
+          example: false
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        operator_paid:
+          type: boolean
+          example: false
+        operator_paid_at:
+          type: string
+          format: date-time
+          nullable: true
+        asset_id:
+          type: integer
+          nullable: true
+        status_id:
+          type: integer
+          example: 1
+        gsd:
+          type: number
+          nullable: true
+        shape:
+          type: string
+          example: "polygon"
+        name:
+          type: string
+          example: "Updated Task"
+        image_count:
+          type: integer
+          example: 4500
+        image_size:
+          type: integer
+          example: 345
+  responses:
+    BadRequest:
+      description: Bad Request - Invalid or missing input.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "MissingKeyInBody, InvalidInput, FailedInProgress, InvalidValueProvided"
+    NotFound:
+      description: Resource Not Found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "NotFound - The specified resource ID was not found."
 security:
   - BearerAuth: []
-  
 paths:
-  /voucher-management/customer/credit:
+  /task-management/customer/tasks:
     post:
-      tags: 
-      - Vouchers
-      summary: Generate vouchers (for testing only))
-      description: Generate non-attached vouchers.
-      operationId: generateVoucher
+      summary: Create new tasks
+      description: Create a new set of tasks with provided details.
+      operationId: createTasks
+      security:
+        - BearerAuth: []
       requestBody:
-        description: Generate random unique vouchers, later to attach them to the needed user.
+        description: List of tasks to be created.
         required: true
         content:
           application/json:
             schema:
               type: array
               items:
-                type: object
-                properties:
-                  amount:
-                    type: integer
-                    example: 250
-                  currency_id:
-                    type: integer
-                    example: 1
-                    
+                $ref: '#/components/schemas/TaskCreate'
       responses:
-        200:
-          description: Vouchers generated successfully.
+        201:
+          description: Tasks created successfully.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/VoucherDetails'
+               schema:
+                $ref: '#/components/schemas/TaskDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
     get:
-      tags: 
-      - Vouchers
-      summary: Get all non-attached vouchers (only for testing))
-      description: Retrieves a list of all Non Attached Vouchers.
-      operationId: getNonAttachedVouchers
+      summary: Get all tasks
+      description: Retrieves a list of all tasks.
+      operationId: getTasks
       security:
         - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The page number to retrieve.
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+          description: The number of tasks per page.
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+          description: The field to sort by (e.g., 'name', 'price', 'create_time').
+        - in: query
+          name: sort_direction
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: The direction of sorting (ascending or descending).
       responses:
         200:
-          description: List of All Non-Attched Vouchers retrieved successfully.
+          description: List of tasks retrieved successfully.
           content:
             application/json:
               schema:
                 type: array
-                items: 
-                  type: object
-                  properties:
-                    uuid:
-                      type: string
-                      example: 6SG4GZDY
-                example:
-                  - 6SG4GZDY
-                  - EA758YGS
-    put:
-      tags: 
-      - Vouchers
-      summary: Attach a voucher to user
-      description: Attaches the voucher from "Non-attached vouchers" to a user (for testing only).
-      operationId: attachVoucher
-      security:
-        - BearerAuth: []
-      requestBody:
-        description: All the attached vouchers of the current user.
-        required: true
-        content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/VoucherAttach'
-      responses:
-        200:
-          description: Voucher attached successfully to the user.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VoucherDetails'
-  /voucher-management/customer/balance:
+                items:
+                  $ref: '#/components/schemas/TaskDetails'
+
+  /task-management/customer/tasks/{id}:
     get:
-      tags: 
-      - Vouchers
-      summary: Get user voucher balance
-      description: Retrieves the user balance.
-      operationId: getVoucherBalance
+      summary: Get a task
+      description: Get an existing task by its ID.
+      operationId: getTask
       security:
         - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID to get.
+          schema:
+            type: integer
       responses:
         200:
-          description: Voucher Balance retrieved successfully.
+          description: Task retrieved successfully.
           content:
             application/json:
               schema:
-                type: integer
-                example: 400
-  /voucher-management/customer/validate:
-    post:
-      tags: 
-      - Vouchers
-      summary: Validate user voucher (this is the one you need on the payment method upon applying the voucher)
-      description: Checks voucher validity for the user.
-      operationId: validateVoucher
+                $ref: '#/components/schemas/TaskDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a task
+      description: Update an existing task by its ID.
+      operationId: updateTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID to update.
+          schema:
+            type: integer
       requestBody:
-        description: Validate balance of the current user.
+        description: Updated details of the task.
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                uuid:
-                  type: string
-                  example: 6SG4GZDY
+              $ref: '#/components/schemas/TaskUpdate'
       responses:
         200:
-          description: Voucher validated successfully.
+          description: Task updated successfully.
           content:
             application/json:
               schema:
-                type: integer
-                example: 400
-  /voucher-management0/customer/pay:
-    post:
-      tags: 
-      - Vouchers
-      summary: Pay with voucher
-      description: Aplies payment with voucher if the balance is enough.
-      operationId: payWithVoucher
-      requestBody:
-        description: Pay with voucher balance of the current user.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                task_id:
-                  type: integer
-                  example: 67
-                currency_id:
-                  type: integer
-                  example: 1
-                amount:
-                  type: integer
-                  example: 400
+                $ref: '#/components/schemas/TaskDetails'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete a task
+      description: Delete an existing task by its ID.
+      operationId: deleteTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID to delete.
+          schema:
+            type: integer
       responses:
-        200:
-          description: Paid successfully with voucher.
-          content:
-            application/json:
-              schema:
-                type: boolean
-                example: True
-  
+        204:
+          description: Task deleted successfully.
+        404:
+          $ref: '#/components/responses/NotFound'
                   
