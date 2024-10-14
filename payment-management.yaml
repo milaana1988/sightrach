@@ -114,6 +114,41 @@ paths:
                       type: string
                       enum:
                         - UnexpectedException
+    put:
+      tags:
+        - payment methods management
+      description: Create stripe client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_payment_method_id:
+                  type: string
+      responses:
+        200:
+          description: Successful Update stripe default payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/client'
+        500:
+          description: "unexpected error response for GET /payment-management/customer/client"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
   /payment-management/customer/payment-methods:
     get:
       tags:
@@ -171,7 +206,45 @@ paths:
               schema:
                 $ref: '#/components/schemas/client'
         500:
-          description: "unexpected error response for GET /payment-management/customer/client"
+          description: "unexpected error response for POST /payment-management/customer/payment-methods"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+                        
+  /payment-management/customer/payment-methods/{id}:
+    delete:
+      tags:
+        - payment methods management
+      description: Delete stripe payment method
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Successful DELETE payment method
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        500:
+          description: "unexpected error response for DELETE /payment-management/customer/payment-methods"
           content:
             application/json:
               schema:
