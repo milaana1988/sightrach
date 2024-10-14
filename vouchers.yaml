@@ -62,7 +62,9 @@ components:
                   error:
                     type: string
                     example: "NotFound - The specified resource ID was not found."
-
+security:
+  - BearerAuth: []
+  
 paths:
   /voucher-management/customer/credit:
     post:
@@ -141,7 +143,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VoucherDetails'
-  /voucher-management/balance:
+  /voucher-management/customer/balance:
     get:
       tags: 
       - Vouchers
@@ -158,7 +160,7 @@ paths:
               schema:
                 type: integer
                 example: 400
-  /voucher-management/validate:
+  /voucher-management/customer/validate:
     post:
       tags: 
       - Vouchers
@@ -184,7 +186,7 @@ paths:
               schema:
                 type: integer
                 example: 400
-  /voucher-management/pay:
+  /voucher-management0/customer/pay:
     post:
       tags: 
       - Vouchers
@@ -217,4 +219,3 @@ paths:
                 type: boolean
                 example: True
   
-                  
