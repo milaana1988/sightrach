@@ -240,6 +240,35 @@ components:
         image_size:
           type: integer
           example: 345
+    invoice:
+      type: object
+      properties:
+        id:
+          type: string
+        customer:
+          type: string
+        paid:
+          type: boolean
+        total:
+          type: integer
+        total_excluding_tax:
+          type: integer
+        lines:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  description:
+                    type: string
+                  amount:
+                    type: integer
+                  amount_excluding_tax:
+                    type: integer
   responses:
     BadRequest:
       description: Bad Request - Invalid or missing input.
@@ -285,8 +314,15 @@ paths:
           description: Tasks created successfully.
           content:
             application/json:
-               schema:
-                $ref: '#/components/schemas/TaskDetails'
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskDetails'
+                  invoice:
+                    $ref: '#/components/schemas/invoice'
         400:
           $ref: '#/components/responses/BadRequest'
         404:
