@@ -17,6 +17,107 @@ components:
           properties:
             default_payment_method:
               type: string
+    invoice:
+      type: object
+      properties:
+        id:
+          type: string
+        customer:
+          type: string
+        paid:
+          type: boolean
+        total:
+          type: integer
+        total_excluding_tax:
+          type: integer
+        lines:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  description:
+                    type: string
+                  amount:
+                    type: integer
+                  amount_excluding_tax:
+                    type: integer
+    task:
+      type: object
+      properties:
+        image_count:
+          type: integer
+          example: 4500
+        sector_id:
+          type: integer
+          example: 1  
+        image_size:
+          type: integer
+          example: 345
+        asset_name:
+          type: string
+          example: "lkhhkkh"
+        remarks:
+          type: string
+          example: "remarks example"  
+        price:
+          type: number
+          example: 5765478
+        name:
+          type: string
+          example: "New Task"
+        pref_time:
+          type: string
+          format: time
+          example: "08:00"
+        pref_end_time:
+          type: string
+          format: time
+          example: "12:00"
+        services:
+          type: array
+          items:
+            type: integer
+          example: [69, 70]
+        gsd:
+          type: number
+          example: 1.76
+        overlap_x:
+          type: integer
+          example: 90
+        overlap_y:
+          type: integer
+          example: 90
+        polygon:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            example: [40.714557, -74.046242]
+          example:
+            - [40.714557, -74.046242]
+            - [42.714557, -72.046242]
+            - [43.714557, -70.046242]
+            - [40.714557, -74.046242]
+        group_name:
+          type: string
+          example: ""
+        geolocation:
+          type: string
+          example: "GRX6+X2 Mitzpe Ramon, Israel"
+        shape:
+          type: string
+          example: polygon
+        is_hidden:
+          type: integer
+          example: 0
+                  
+  
 security:
   - bearerAuth: []
 openapi: 3.0.3
@@ -259,4 +360,100 @@ paths:
                       type: string
                       enum:
                         - UnexpectedException
+  /payment-management/customer/invoice:
+    get:
+      tags:
+        - payment methods management
+      description: Get customer invoices
+      responses:
+        200:
+          description: Successful Get customer invoices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invoice'
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      error_type:
+                        type: string
+                        enum:
+                        - NotFound
+        500:
+          description: "unexpected error response for GET /payment-management/customer/invoice"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+  /payment-management/customer/invoice/preview:
+    post:
+      tags:
+        - payment methods management
+      description: Get invoice preview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tasks:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/task'
+      responses:
+        200:
+          description: Successful Get invoice preview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/invoice'
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      error_type:
+                        type: string
+                        enum:
+                        - NotFound
+        500:
+          description: "unexpected error response for GET /payment-management/customer/invoice/preview"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    error_type:
+                      type: string
+                      enum:
+                        - UnexpectedException
+      
+  
   
