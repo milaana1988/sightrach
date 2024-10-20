@@ -89,56 +89,13 @@ paths:
                   currency_id:
                     type: integer
                     example: 1
+                  user_email:
+                    type: string
+                    example: "matan@triolla.io"
                     
       responses:
         200:
           description: Vouchers generated successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VoucherDetails'
-    get:
-      tags: 
-      - Vouchers
-      summary: Get all non-attached vouchers (only for testing))
-      description: Retrieves a list of all Non Attached Vouchers.
-      operationId: getNonAttachedVouchers
-      security:
-        - BearerAuth: []
-      responses:
-        200:
-          description: List of All Non-Attched Vouchers retrieved successfully.
-          content:
-            application/json:
-              schema:
-                type: array
-                items: 
-                  type: object
-                  properties:
-                    uuid:
-                      type: string
-                      example: 6SG4GZDY
-                example:
-                  - 6SG4GZDY
-                  - EA758YGS
-    put:
-      tags: 
-      - Vouchers
-      summary: Attach a voucher to user
-      description: Attaches the voucher from "Non-attached vouchers" to a user (for testing only).
-      operationId: attachVoucher
-      security:
-        - BearerAuth: []
-      requestBody:
-        description: All the attached vouchers of the current user.
-        required: true
-        content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/VoucherAttach'
-      responses:
-        200:
-          description: Voucher attached successfully to the user.
           content:
             application/json:
               schema:
